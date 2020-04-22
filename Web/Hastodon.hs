@@ -62,17 +62,17 @@ module Web.Hastodon
   , getPublicTimelineWithOption
   , getTaggedTimeline
   , getTaggedTimelineWithOption
-
   , streamUser
   , streamPublic
   , streamLocal
   , streamHashtag
   , streamList
-  ) where
+  )
+where
 
 
-import Web.Hastodon.API
-import Web.Hastodon.Option
-import Web.Hastodon.Streaming
-import Web.Hastodon.Types
-import Web.Hastodon.Util
+import           Web.Hastodon.API
+import           Web.Hastodon.Option
+import           Web.Hastodon.Streaming
+import           Web.Hastodon.Types
+import           Web.Hastodon.Util

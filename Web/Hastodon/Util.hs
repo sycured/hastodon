@@ -10,18 +10,19 @@ module Web.Hastodon.Util
   , optionAsQuery
   , optionAsForm
   , utf8ToChar8
-  ) where
+  )
+where
 
 
-import Data.Maybe (fromMaybe)
-import qualified Data.ByteString.Char8 as Char8
-import qualified Data.Text as T
-import qualified Data.Text.Encoding as T
-import qualified Data.Map as Map
-import Network.HTTP.Simple
-import Network.HTTP.Types.Header
+import           Data.Maybe                     ( fromMaybe )
+import qualified Data.ByteString.Char8         as Char8
+import qualified Data.Text                     as T
+import qualified Data.Text.Encoding            as T
+import qualified Data.Map                      as Map
+import           Network.HTTP.Simple
+import           Network.HTTP.Types.Header
 
-import Web.Hastodon.Types
+import           Web.Hastodon.Types
 
 data HastodonClient = HastodonClient {
   host :: String,
@@ -29,13 +30,14 @@ data HastodonClient = HastodonClient {
 }
 
 
-mkHastodonRequestWithQuery ::
-  [(Char8.ByteString, Maybe Char8.ByteString)] -> String -> HastodonClient -> IO Request
+mkHastodonRequestWithQuery
+  :: [(Char8.ByteString, Maybe Char8.ByteString)]
+  -> String
+  -> HastodonClient
+  -> IO Request
 mkHastodonRequestWithQuery opt path client = do
   initReq <- parseRequest $ "https://" ++ (host client) ++ path
-  return $
-    mkHastodonHeader (token client) $
-    setRequestQueryString opt $ initReq
+  return $ mkHastodonHeader (token client) $ setRequestQueryString opt $ initReq
 
 mkHastodonRequest :: String -> HastodonClient -> IO Request
 mkHastodonRequest = mkHastodonRequestWithQuery []
@@ -50,11 +52,13 @@ utf8ToChar8 = T.encodeUtf8 . T.pack
 
 
 mkOption :: IsOption a => String -> Maybe String -> a
-mkOption key val = fromOptionImpl $ Map.singleton (utf8ToChar8 key) (Right $ utf8ToChar8 <$> val)
+mkOption key val =
+  fromOptionImpl $ Map.singleton (utf8ToChar8 key) (Right $ utf8ToChar8 <$> val)
 
 
 mkArrayOption :: IsOption a => String -> [String] -> a
-mkArrayOption key val = fromOptionImpl $ Map.singleton (utf8ToChar8 key) (Left $ utf8ToChar8 <$> val)
+mkArrayOption key val =
+  fromOptionImpl $ Map.singleton (utf8ToChar8 key) (Left $ utf8ToChar8 <$> val)
 
 
 optionMempty :: IsOption a => a
@@ -62,7 +66,8 @@ optionMempty = fromOptionImpl Map.empty
 
 
 optionMappend :: IsOption a => a -> a -> a
-optionMappend x y = fromOptionImpl $ Map.union (toOptionImpl x) (toOptionImpl y)
+optionMappend x y =
+  fromOptionImpl $ Map.union (toOptionImpl x) (toOptionImpl y)
 
 
 optionAsQuery :: IsOption a => a -> [(Char8.ByteString, Maybe Char8.ByteString)]
@@ -70,7 +75,7 @@ optionAsQuery x = do
   (k, v) <- Map.toList $ toOptionImpl x
   let k' = k `mappend` Char8.pack "[]" -- The Rails convention of list query parameter
   case v of
-    Left l -> [(k, Just x) | x <- l]
+    Left  l -> [ (k, Just x) | x <- l ]
     Right r -> [(k, r)]
 
 

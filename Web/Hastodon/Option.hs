@@ -5,23 +5,23 @@ module Web.Hastodon.Option
   , limit
 
     -- * Range Options
-  , RangeOption ()
+  , RangeOption()
   , IsRangeOption
   , maxId
   , sinceId
 
     -- * Timeline Options
-  , TimelineOption ()
+  , TimelineOption()
   , IsTimelineOption
   , instanceLocal
 
     -- * Status search Options
-  , StatusSearchOption ()
+  , StatusSearchOption()
   , IsStatusSearchOption
   , resolve
 
     -- * Account search Options
-  , AccountSearchOption ()
+  , AccountSearchOption()
   , IsAccountSearchOption
   , following
 
@@ -30,21 +30,21 @@ module Web.Hastodon.Option
   , onlyMedia
 
     -- * Account status getting options
-  , GetAccountStatusesOption ()
+  , GetAccountStatusesOption()
   , IsGetAccountStatusesOption
   , pinned
   , excludeReplies
 
     -- * Notification getting options
-  , GetNotificationsOption ()
+  , GetNotificationsOption()
   , IsGetNotificationsOption
-  , NotificationType (..)
+  , NotificationType(..)
   , excludeTypes
 
     -- * Status posting options
-  , PostStatusOption ()
+  , PostStatusOption()
   , IsPostStatusOption
-  , Visibility (..)
+  , Visibility(..)
   , inReplyToId
   , mediaIds
   , sensitive
@@ -52,19 +52,19 @@ module Web.Hastodon.Option
   , visibility
 
     -- * Mute options
-  , PostMuteOption ()
+  , PostMuteOption()
   , IsPostMuteOption
   , muteNotifications
   )
 where
 
-import Data.Semigroup
-import Data.Monoid hiding ((<>))
-import Control.Applicative
-import qualified Data.Map as Map
+import           Data.Semigroup
+import           Data.Monoid             hiding ( (<>) )
+import           Control.Applicative
+import qualified Data.Map                      as Map
 
-import Web.Hastodon.Types
-import Web.Hastodon.Util
+import           Web.Hastodon.Types
+import           Web.Hastodon.Util
 
 
 --
@@ -83,13 +83,13 @@ newtype RangeOption = RangeOption { unRangeOption :: OptionImpl } deriving Show
 
 instance IsOption RangeOption where
   fromOptionImpl = RangeOption
-  toOptionImpl = unRangeOption
+  toOptionImpl   = unRangeOption
 
 instance Semigroup RangeOption where
   (<>) = optionMappend
 
 instance Monoid RangeOption where
-  mempty = optionMempty
+  mempty  = optionMempty
   mappend = (<>)
 
 class IsOption a => IsRangeOption a where {}
@@ -110,13 +110,13 @@ newtype TimelineOption = TimelineOption { unTimelineOption :: OptionImpl } deriv
 
 instance IsOption TimelineOption where
   fromOptionImpl = TimelineOption
-  toOptionImpl = unTimelineOption
+  toOptionImpl   = unTimelineOption
 
 instance Semigroup TimelineOption where
   (<>) = optionMappend
 
 instance Monoid TimelineOption where
-  mempty = optionMempty
+  mempty  = optionMempty
   mappend = (<>)
 
 class IsOption a => IsTimelineOption a where {}
@@ -144,13 +144,13 @@ newtype GetAccountStatusesOption = GetAccountStatusesOption { unGetAccountStatus
 
 instance IsOption GetAccountStatusesOption where
   fromOptionImpl = GetAccountStatusesOption
-  toOptionImpl = unGetAccountStatusesOption
+  toOptionImpl   = unGetAccountStatusesOption
 
 instance Semigroup GetAccountStatusesOption where
   (<>) = optionMappend
 
 instance Monoid GetAccountStatusesOption where
-  mempty = optionMempty
+  mempty  = optionMempty
   mappend = (<>)
 
 class IsOption a => IsGetAccountStatusesOption a where {}
@@ -175,13 +175,13 @@ newtype GetNotificationsOption = GetNotificationsOption {
 
 instance IsOption GetNotificationsOption where
   fromOptionImpl = GetNotificationsOption
-  toOptionImpl = unGetNotificationsOption
+  toOptionImpl   = unGetNotificationsOption
 
 instance Semigroup GetNotificationsOption where
   (<>) = optionMappend
 
 instance Monoid GetNotificationsOption where
-  mempty = optionMempty
+  mempty  = optionMempty
   mappend = (<>)
 
 class IsOption a => IsGetNotificationsOption a where {}
@@ -195,10 +195,10 @@ data NotificationType =
   deriving (Eq, Show, Ord,Enum, Bounded)
 
 formatNt :: NotificationType -> String
-formatNt NotificationFollow = "follow"
+formatNt NotificationFollow    = "follow"
 formatNt NotificationFavourite = "favourite"
-formatNt NotificationReblog = "reblog"
-formatNt NotificationMention = "mention"
+formatNt NotificationReblog    = "reblog"
+formatNt NotificationMention   = "mention"
 
 excludeTypes :: IsGetNotificationsOption a => [NotificationType] -> a
 excludeTypes ts = mkArrayOption "exclude_types" $ map formatNt ts
@@ -210,13 +210,13 @@ newtype AccountSearchOption = AccountSearchOption { unAccountSearchOption :: Opt
 
 instance IsOption AccountSearchOption where
   fromOptionImpl = AccountSearchOption
-  toOptionImpl = unAccountSearchOption
+  toOptionImpl   = unAccountSearchOption
 
 instance Semigroup AccountSearchOption where
   (<>) = optionMappend
 
 instance Monoid AccountSearchOption where
-  mempty = optionMempty
+  mempty  = optionMempty
   mappend = (<>)
 
 class IsOption a => IsAccountSearchOption a where {}
@@ -233,13 +233,13 @@ newtype StatusSearchOption = StatusSearchOption { unStatusSearchOption :: Option
 
 instance IsOption StatusSearchOption where
   fromOptionImpl = StatusSearchOption
-  toOptionImpl = unStatusSearchOption
+  toOptionImpl   = unStatusSearchOption
 
 instance Semigroup StatusSearchOption where
   (<>) = optionMappend
 
 instance Monoid StatusSearchOption where
-  mempty = optionMempty
+  mempty  = optionMempty
   mappend = (<>)
 
 class IsOption a => IsStatusSearchOption a where {}
@@ -257,13 +257,13 @@ newtype PostStatusOption = PostStatusOption { unPostStatusOption :: OptionImpl }
 
 instance IsOption PostStatusOption where
   fromOptionImpl = PostStatusOption
-  toOptionImpl = unPostStatusOption
+  toOptionImpl   = unPostStatusOption
 
 instance Semigroup PostStatusOption where
   (<>) = optionMappend
 
 instance Monoid PostStatusOption where
-  mempty = optionMempty
+  mempty  = optionMempty
   mappend = (<>)
 
 class IsOption a => IsPostStatusOption a where {}
@@ -275,10 +275,10 @@ data Visibility =
   deriving (Eq, Show, Ord, Enum, Bounded)
 
 formatVis :: Visibility -> String
-formatVis VisibilityDirect = "direct"
-formatVis VisibilityPrivate = "private"
+formatVis VisibilityDirect   = "direct"
+formatVis VisibilityPrivate  = "private"
 formatVis VisibilityUnlisted = "unlisted"
-formatVis VisibilityPublic = "public"
+formatVis VisibilityPublic   = "public"
 
 inReplyToId :: IsPostStatusOption a => StatusId -> a
 inReplyToId i = mkOption "in_reply_to_id" (Just $ show i)
@@ -302,13 +302,13 @@ newtype PostMuteOption = PostMuteOption { unPostMuteOption :: OptionImpl } deriv
 
 instance IsOption PostMuteOption where
   fromOptionImpl = PostMuteOption
-  toOptionImpl = unPostMuteOption
+  toOptionImpl   = unPostMuteOption
 
 instance Semigroup PostMuteOption where
   (<>) = optionMappend
 
 instance Monoid PostMuteOption where
-  mempty = optionMempty
+  mempty  = optionMempty
   mappend = (<>)
 
 class IsOption a => IsPostMuteOption a where {}
